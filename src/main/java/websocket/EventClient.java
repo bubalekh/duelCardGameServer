@@ -1,16 +1,20 @@
 package websocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import websocket.message.MatchEvent;
+import websocket.message.MatchEventType;
 
 import java.io.IOException;
 
 public class EventClient {
     public static void main(String[] args) {
+        ObjectMapper objectMapper = new ObjectMapper();
         // connection url
-        String uri = "ws://localhost:8090/events";
+        String uri = "ws://localhost:8090";
 
         StandardWebSocketClient client = new StandardWebSocketClient();
         WebSocketSession session = null;
@@ -22,7 +26,9 @@ public class EventClient {
             // Wait for Connect
             session = fut.get();
             // Send a message
-            session.sendMessage(new TextMessage("Hello"));
+            session.sendMessage(new TextMessage("join htefl"));
+            MatchEvent readyEvent = new MatchEvent(MatchEventType.READY);
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsBytes(readyEvent)));
             // Close session
             session.close();
 
