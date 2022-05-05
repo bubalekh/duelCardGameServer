@@ -30,6 +30,12 @@ public class Backend {
         session.sendMessage(new TextMessage(newGameUrl));
     }
 
+    public void createGame() {
+        String newGameUrl = generateGameUrl();
+        gameControllerHashMap.put(newGameUrl, new MatchController());
+        //TODO: Notify clients about created game
+    }
+
     public void joinGame(WebSocketSession session, String gameUrl) throws IOException {
         if (gameUrlsHashMap.containsValue(gameUrl)) {
             if (gameControllerHashMap.get(gameUrl).waitingForPlayers()) {
@@ -37,6 +43,17 @@ public class Backend {
                 gameControllerHashMap.get(gameUrl).addPlayer(session);
                 System.out.println("Successfully joined to game " + gameUrl);
                 session.sendMessage(new TextMessage("success"));
+            }
+        }
+    }
+
+    public void leaveGame(WebSocketSession session) {
+        String gameUrl = gameUrlsHashMap.get(session);
+        if (gameControllerHashMap.get(gameUrl).hasPlayer(session)) {
+            try {
+                gameControllerHashMap.get(gameUrl).removePlayer(session);
+            } catch (NullPointerException ignored) {
+                System.out.println("There is no game to leave");
             }
         }
     }

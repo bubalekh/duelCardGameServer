@@ -19,16 +19,17 @@ public class JsonMapperTest {
             LinkedList<CreatureController> creatures = new LinkedList<>();
             ArrayList<LocationController> locationControllers = new ArrayList<>();
             locationControllers.add(new LocationController(0, 1));
+            locationControllers.add(new LocationController(0, 2));
             creatures.add(new CreatureController(true, locationControllers));
 
             LinkedList<CardController> cards = new LinkedList<>();
             cards.add(new CardController(5, CardGuildType.EARTH));
 
-            /* MatchEvent matchEvent = new MatchEvent(
+            MatchEvent matchEvent = new MatchEvent(
                     MatchEventType.ACTIVATION,
                     cards,
-                    creatures);*/
-            MatchEvent matchEvent = new MatchEvent(MatchEventType.READY);
+                    creatures);
+            // MatchEvent matchEvent = new MatchEvent(MatchEventType.READY);
             objectMapper.writeValue(new File("target/test.json"), matchEvent);
 
             /*GameEvent gameEvent = objectMapper.readValue(testJson, GameEvent.class);

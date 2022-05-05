@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MatchController extends Controller {
+
     private final HashMap<WebSocketSession, PlayerController> players;
     private final ArrayList<PlayerController> readyPlayers;
     private PlayerController currentPlayer;
     private final ObjectMapper objectMapper;
 
-    //Empty constructor
     public MatchController(WebSocketSession player) {
         this.currentPlayer = PlayerController.FIRST_PLAYER;
         this.readyPlayers = new ArrayList<>();
@@ -25,12 +25,30 @@ public class MatchController extends Controller {
         this.objectMapper = new ObjectMapper();
     }
 
+    //Empty constructor
+    public MatchController() {
+        this.players = new HashMap<>();
+        this.readyPlayers = new ArrayList<>();
+        this.objectMapper = new ObjectMapper();
+    }
+
     public void addPlayer(WebSocketSession player) {
         if (this.players.size() < 2) {
-            this.players.put(player, PlayerController.SECOND_PLAYER);
+            if (this.players.containsValue(PlayerController.FIRST_PLAYER))
+                this.players.put(player, PlayerController.SECOND_PLAYER);
+            else
+                this.players.put(player, PlayerController.FIRST_PLAYER);
         }
         else {
             System.out.println("Maximum players count reached!");
+        }
+    }
+
+    public void removePlayer(WebSocketSession player) {
+        try {
+            this.players.remove(player);
+        } catch (NullPointerException ignored) {
+            System.out.println("Can't remove non-existing player");
         }
     }
 
@@ -38,7 +56,7 @@ public class MatchController extends Controller {
         return players.size() < 2;
     }
 
-    public boolean updateMatch(WebSocketSession player, MatchEvent event) throws IOException {
+    public void updateMatch(WebSocketSession player, MatchEvent event) throws IOException {
         //TODO: Add a proper game update method
         if (this.players.containsKey(player)) {
             if (currentPlayer == this.players.get(player)) {
@@ -70,21 +88,28 @@ public class MatchController extends Controller {
                 }
 
                 System.out.println("Game update called from " + this.players.get(player));
+                String response = objectMapper.writeValueAsString(event);
                 this.players.forEach((session, playerController) -> {
                     try {
-                        String response = objectMapper.writeValueAsString(event);
                         session.sendMessage(new TextMessage(response));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-                currentPlayer = (currentPlayer == PlayerController.FIRST_PLAYER) ? PlayerController.SECOND_PLAYER : PlayerController.FIRST_PLAYER;
+                delegateTurn(); //Передача хода противнику
             }
         }
-        return true;
     }
 
     private boolean allPlayersReady() {
         return readyPlayers.size() >= 2;
+    }
+
+    public boolean hasPlayer(WebSocketSession session) {
+        return this.players.containsKey(session);
+    }
+
+    private void delegateTurn() {
+        currentPlayer = (currentPlayer == PlayerController.FIRST_PLAYER) ? PlayerController.SECOND_PLAYER : PlayerController.FIRST_PLAYER;
     }
 }
