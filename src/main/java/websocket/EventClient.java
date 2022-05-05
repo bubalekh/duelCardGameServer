@@ -6,7 +6,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import websocket.message.MatchEvent;
-import websocket.message.MatchEventType;
+import websocket.message.EventType;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class EventClient {
             session = fut.get();
             // Send a message
             session.sendMessage(new TextMessage("join htefl"));
-            MatchEvent readyEvent = new MatchEvent(MatchEventType.READY);
+            MatchEvent readyEvent = new MatchEvent(EventType.READY);
             session.sendMessage(new TextMessage(objectMapper.writeValueAsBytes(readyEvent)));
             // Close session
             session.close();

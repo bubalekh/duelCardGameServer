@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import websocket.controller.*;
 import websocket.message.MatchEvent;
-import websocket.message.MatchEventType;
+import websocket.message.EventType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class JsonMapperTest {
             cards.add(new CardController(5, CardGuildType.EARTH));
 
             MatchEvent matchEvent = new MatchEvent(
-                    MatchEventType.ACTIVATION,
+                    EventType.ACTIVATION,
                     cards,
                     creatures);
             // MatchEvent matchEvent = new MatchEvent(MatchEventType.READY);

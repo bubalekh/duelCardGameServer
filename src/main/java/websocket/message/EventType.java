@@ -1,6 +1,6 @@
 package websocket.message;
 
-public enum MatchEventType {
+public enum EventType {
     ERROR,
     READY,
     DRAFT,

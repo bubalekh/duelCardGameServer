@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class CreatureController {
     private boolean attack;
-    private int field;
     private ArrayList<LocationController> locations;
 
     public CreatureController() {
@@ -13,7 +12,6 @@ public class CreatureController {
 
     public CreatureController(boolean attack, ArrayList<LocationController> locations) {
         this.attack = attack;
-        this.field = field;
         this.locations = locations;
     }
 

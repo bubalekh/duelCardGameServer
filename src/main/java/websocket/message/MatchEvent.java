@@ -6,7 +6,7 @@ import websocket.controller.CreatureController;
 import java.util.LinkedList;
 
 public class MatchEvent {
-    private MatchEventType type;
+    private EventType type;
     private LinkedList<CardController> cards;
     private LinkedList<CreatureController> creatures;
 
@@ -14,17 +14,17 @@ public class MatchEvent {
         super();
     }
 
-    public MatchEvent(MatchEventType type, LinkedList<CardController> cards, LinkedList<CreatureController> creatures) {
+    public MatchEvent(EventType type, LinkedList<CardController> cards, LinkedList<CreatureController> creatures) {
         this.type = type;
         this.cards = cards;
         this.creatures = creatures;
     }
 
-    public MatchEvent(MatchEventType error) {
+    public MatchEvent(EventType error) {
         this.type = error;
     }
 
-    public MatchEventType getType() {
+    public EventType getType() {
         return type;
     }
 

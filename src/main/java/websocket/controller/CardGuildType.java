@@ -1,7 +1,5 @@
 package websocket.controller;
 
 public enum CardGuildType {
-    WATER,
-    EARTH,
-    LIGHTNING
+    WATER, FIRE, ICE, WIND, CRYSTAL, EARTH, SHADOW, PLANTS, LIGHT, THUNDERBOLT
 }

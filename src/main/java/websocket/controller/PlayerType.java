@@ -1,6 +1,7 @@
 package websocket.controller;
 
-public enum PlayerController {
+public enum PlayerType {
+    NO_PLAYER,
     FIRST_PLAYER,
     SECOND_PLAYER
 }

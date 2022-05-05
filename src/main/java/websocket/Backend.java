@@ -48,13 +48,14 @@ public class Backend {
     }
 
     public void leaveGame(WebSocketSession session) {
-        String gameUrl = gameUrlsHashMap.get(session);
-        if (gameControllerHashMap.get(gameUrl).hasPlayer(session)) {
-            try {
+        String gameUrl = "";
+        try {
+            gameUrl = gameUrlsHashMap.get(session);
+            if (gameControllerHashMap.get(gameUrl).hasPlayer(session)) {
                 gameControllerHashMap.get(gameUrl).removePlayer(session);
-            } catch (NullPointerException ignored) {
-                System.out.println("There is no game to leave");
             }
+        } catch (NullPointerException ignored) {
+            System.out.println("No game to leave");
         }
     }
 
