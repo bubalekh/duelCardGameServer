@@ -1,20 +1,22 @@
 package gameModels;
 
+import websocket.controller.CardController;
+
 import java.util.LinkedList;
 
 public class HandModel {
     LinkedList<CreatureModel> hand;
 
     public HandModel() {
-        hand = new LinkedList<>();
+        this.hand = new LinkedList<>();
     }
 
     public void addToHand(CreatureModel creature) {
-        if (hand.size() < 8)
-            hand.add(creature);
+        if (this.hand.size() < 8)
+            this.hand.add(creature);
     }
 
-    public CreatureModel getCreature(int id) {
+    public CreatureModel getCard(int id) {
         try {
             CreatureModel tmp = new CreatureModel(hand.get(id).getType(), hand.get(id).getMaxPower());
             hand.remove(id);
@@ -23,5 +25,21 @@ public class HandModel {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void discardCard(int cardId) {
+        try {
+            hand.remove(cardId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void discardCard(CreatureModel card) {
+        try {
+            hand.remove(card);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

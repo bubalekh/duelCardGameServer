@@ -1,6 +1,7 @@
 package gameModels;
 
 import websocket.controller.CardGuildType;
+import websocket.controller.PlayerType;
 import websocket.message.GameEvent;
 
 import java.util.ArrayList;
@@ -14,6 +15,12 @@ public class GameModel {
     public GameModel() {
         this.fieldsModels = new ArrayList<>();
         this.playerModels = new ArrayList<>();
+        //Adding fields to the game
+        fieldsModels.add(new FieldModel(0));
+        fieldsModels.add(new FieldModel(1));
+        fieldsModels.add(new FieldModel(2));
+        fieldsModels.add(new FieldModel(3));
+        fieldsModels.add(new FieldModel(4));
     }
 
     public void addPlayer(PlayerModel playerModel) {
@@ -28,7 +35,9 @@ public class GameModel {
         return new GameEvent();
     }
 
-    public void activateCreature(PlayerModel playerModel, ArrayList<FieldModel> fieldModel, boolean attack, int position, int target) {
+    public void activateCreature(PlayerModel playerModel, CreatureModel creatureModel, ArrayList<FieldModel> fieldModel, boolean attack, int position, int target) {
+        playerModel.addToGraveyard(creatureModel);
+        playerModel.getHandModel().discardCard(creatureModel);
         if (attack) {
             CreatureModel defenderCreature;
             if (target == -1) {
@@ -46,6 +55,7 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                         fieldModel.get(1).addCreatures(playerModel, attackerCreature);
                         fieldModel.get(0).removeCreature(playerModel, attackerCreature);
@@ -55,6 +65,7 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                     } catch (NullPointerException e) {
                         e.printStackTrace();
@@ -67,6 +78,7 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                         fieldModel.get(0).getCreature(playerModel, attackerCreature.getId() + 1).applyDamage(1); //Нанести 1 единицу урона союзнику, стоящему за огнем
                     } catch (NullPointerException e) {
@@ -82,6 +94,7 @@ public class GameModel {
                                 if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                     playerModel.addPoints(2);
                                 else playerModel.addPoints(1);
+                                getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                             } //Если на последнем существе в локации
                         }
                         else {
@@ -90,6 +103,7 @@ public class GameModel {
                                 if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                     playerModel.addPoints(2);
                                 else playerModel.addPoints(1);
+                                getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                             }
                         }
                     } catch (Exception e) {
@@ -98,7 +112,33 @@ public class GameModel {
                     break;
                 case WIND:
                     try {
-
+                        // Move elemental from field 0 to field 1
+                        fieldModel.get(1).addCreatures(playerModel, attackerCreature);
+                        fieldModel.get(0).removeCreature(playerModel, attackerCreature);
+                        defenderCreature = fieldsModels.get(fieldModel.get(1).getId() - 1).getFirstCreature(getOpponentPlayerModel(playerModel));
+                        if (defenderCreature.applyDamage(1)) {
+                            fieldsModels.get(fieldModel.get(0).getId() - 1).removeCreature(getOpponentPlayerModel(playerModel), defenderCreature);
+                            if (defenderCreature.getType() == CardGuildType.CRYSTAL)
+                                playerModel.addPoints(2);
+                            else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
+                        }
+                        defenderCreature = fieldsModels.get(fieldModel.get(1).getId()).getFirstCreature(getOpponentPlayerModel(playerModel));
+                        if (defenderCreature.applyDamage(1)) {
+                            fieldsModels.get(fieldModel.get(0).getId()).removeCreature(getOpponentPlayerModel(playerModel), defenderCreature);
+                            if (defenderCreature.getType() == CardGuildType.CRYSTAL)
+                                playerModel.addPoints(2);
+                            else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
+                        }
+                        defenderCreature = fieldsModels.get(fieldModel.get(1).getId() + 1).getFirstCreature(getOpponentPlayerModel(playerModel));
+                        if (defenderCreature.applyDamage(1)) {
+                            fieldsModels.get(fieldModel.get(0).getId()).removeCreature(getOpponentPlayerModel(playerModel), defenderCreature);
+                            if (defenderCreature.getType() == CardGuildType.CRYSTAL)
+                                playerModel.addPoints(2);
+                            else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -110,18 +150,21 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case EARTH:
+                case LIGHT:
                     try {
                         if (defenderCreature.applyDamage(2)) {
                             fieldModel.get(0).removeCreature(getOpponentPlayerModel(playerModel), defenderCreature);
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -134,6 +177,7 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(3);
                             else playerModel.addPoints(2);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -147,18 +191,7 @@ public class GameModel {
                             if (defenderCreature.getType() == CardGuildType.CRYSTAL)
                                 playerModel.addPoints(2);
                             else playerModel.addPoints(1);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case LIGHT:
-                    try {
-                        if (defenderCreature.applyDamage(2)) {
-                            fieldModel.get(0).removeCreature(getOpponentPlayerModel(playerModel), defenderCreature);
-                            if (defenderCreature.getType() == CardGuildType.CRYSTAL)
-                                playerModel.addPoints(3);
-                            else playerModel.addPoints(2);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -166,19 +199,31 @@ public class GameModel {
                     break;
             }
         }
+        else {
+            CreatureModel attackerCreature =  fieldModel.get(0).getCreature(playerModel, position);
+            if (attackerCreature.getType() == CardGuildType.LIGHT) {
+                for (int i = 0; i < fieldModel.size() - 1; i++){
+                    CreatureModel healedCreature = fieldModel.get(i).getCreature(playerModel, target);
+                    healedCreature.healDamage();
+                }
+            }
+        }
     }
 
-    public void activateCreature(PlayerModel playerModel, ArrayList<FieldModel> fieldModel, boolean attack, int position, int[] target) {
+    public void activateCreature(PlayerModel playerModel, CreatureModel creatureModel, ArrayList<FieldModel> fields, boolean attack, int position, ArrayList<Integer> target) {
+        playerModel.addToGraveyard(creatureModel);
+        playerModel.getHandModel().discardCard(creatureModel);
         try {
             int counter = 0;
-            CreatureModel attackerCreature = fieldModel.get(0).getCreature(playerModel, position);
+            CreatureModel attackerCreature = fields.get(0).getCreature(playerModel, position);
             if (attackerCreature.getType() == CardGuildType.THUNDERBOLT) {
-                CreatureModel defenderCreature = fieldModel.get(0).getCreature(getOpponentPlayerModel(playerModel), target[counter]);
+                CreatureModel defenderCreature = fields.get(0).getCreature(getOpponentPlayerModel(playerModel), target.get(counter));
                 while (defenderCreature.applyDamage(2)) {
                     if (defenderCreature.getType() == CardGuildType.CRYSTAL)
-                        playerModel.addPoints(3);
-                    else playerModel.addPoints(2);
-                    defenderCreature = fieldModel.get(0).getCreature(getOpponentPlayerModel(playerModel), target[counter]);
+                        playerModel.addPoints(2);
+                    else playerModel.addPoints(1);
+                    getOpponentPlayerModel(playerModel).addToGraveyard(defenderCreature);
+                    defenderCreature = fields.get(0).getCreature(getOpponentPlayerModel(playerModel), target.get(counter));
                     counter++;
                 }
             }
@@ -188,8 +233,25 @@ public class GameModel {
 
     }
 
-    public void summonCreature() {
-
+    public void summonCreature(PlayerModel playerModel, ArrayList<FieldModel> fields, ArrayList<CreatureModel> creatures) {
+        try {
+            fields.forEach(field -> {
+                if (creatures.get(field.getId()).getType() == CardGuildType.EARTH) {
+                    fieldsModels.get(field.getId()).getPlayerCreatures(getOpponentPlayerModel(playerModel)).forEach(creatureModel -> {
+                        if (creatureModel.applyDamage(1)) {
+                            if (creatureModel.getType() == CardGuildType.CRYSTAL)
+                                playerModel.addPoints(2);
+                            else
+                                playerModel.addPoints(1);
+                            getOpponentPlayerModel(playerModel).addToGraveyard(creatureModel);
+                        }
+                    });
+                }
+                fieldsModels.get(field.getId()).addCreatures(playerModel, creatures.get(field.getId()));
+            });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void check() {
@@ -204,5 +266,27 @@ public class GameModel {
             }
         });
         return tmp.get();
+    }
+
+    public PlayerModel getPlayerModel(PlayerType playerType) {
+        try {
+            return this.playerModels.get(getPlayerIdFromType(playerType));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public FieldModel getField(int fieldId) {
+        try {
+            return this.fieldsModels.get(fieldId);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getPlayerIdFromType(PlayerType playerType) {
+        return playerType == PlayerType.FIRST_PLAYER ? 0 : 1;
     }
 }

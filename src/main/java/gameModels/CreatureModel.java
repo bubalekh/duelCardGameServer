@@ -42,4 +42,13 @@ public class CreatureModel {
         currentPower = this.getCurrentPower();
         return currentPower <= 0;
     }
+
+    public void healDamage(int amount) {
+        if (this.getCurrentPower() < this.getMaxPower())
+            this.setCurrentPower(this.getCurrentPower() + amount);
+    }
+
+    public void healDamage() {
+        this.healDamage(1);
+    }
 }

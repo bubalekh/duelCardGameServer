@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 public class GuildModel {
 
-    private CardGuildType type;
-    private LinkedList<CreatureModel> creatures;
+    private final CardGuildType type;
+    private final LinkedList<CreatureModel> creatures;
 
     public GuildModel(CardGuildType type) {
         this.type = type;

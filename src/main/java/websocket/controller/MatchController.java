@@ -2,6 +2,8 @@ package websocket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gameModels.CreatureModel;
+import gameModels.FieldModel;
 import gameModels.GameModel;
 import gameModels.PlayerModel;
 import org.springframework.web.socket.TextMessage;
@@ -94,6 +96,29 @@ public class MatchController extends Controller {
                         }
                         break;
                     case ACTIVATION:
+                        try {
+                            event.getCreatures().forEach(creatureController -> {
+                                CreatureModel activatedCreature = new CreatureModel(event.getCards().getFirst().getGuild(), event.getCards().getFirst().getPower());
+                                ArrayList<FieldModel> fields = new ArrayList<>();
+                                int activationPosition = creatureController.getLocations().get(0).getPosition();
+                                ArrayList<Integer> activationTarget = new ArrayList<>();
+                                if (creatureController.getLocations().size() > 1) {
+                                    creatureController.getLocations().remove(0);
+                                    creatureController.getLocations().forEach(locationController -> {
+                                        fields.add(new FieldModel(locationController.getField()));
+                                        activationTarget.add(locationController.getPosition());
+                                    });
+                                    gameModel.activateCreature(gameModel.getPlayerModel(currentPlayer), activatedCreature, fields, event.getCreatures().getFirst().isAttack(), activationPosition, activationTarget);
+                                } else {
+                                // Не больше одного
+                                    fields.add(new FieldModel(creatureController.getLocations().get(0).getField()));
+                                    int activationSingleTarget = creatureController.getLocations().get(0).getPosition();
+                                    gameModel.activateCreature(gameModel.getPlayerModel(currentPlayer), activatedCreature, fields, true, activationPosition, activationSingleTarget);
+                                }
+                            });
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case CHECK:
                         break;

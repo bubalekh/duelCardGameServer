@@ -1,5 +1,6 @@
 package gameModels;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -24,7 +25,7 @@ public class DeckModel {
         }
     }
 
-    public CreatureModel getCreature() {
+    public CreatureModel getCard() {
         if (!deck.isEmpty())
             try {
                 CreatureModel tmp = new CreatureModel(deck.getFirst().getType(), deck.getFirst().getMaxPower());

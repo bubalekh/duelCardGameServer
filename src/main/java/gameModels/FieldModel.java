@@ -2,6 +2,7 @@ package gameModels;
 
 import websocket.controller.PlayerType;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class FieldModel {
@@ -160,5 +161,27 @@ public class FieldModel {
                 waterGuild.onActivationAction(order, this, position);
                 break;
         } */
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LinkedList<CreatureModel> getPlayerCreatures(PlayerModel playerModel) {
+        if (playerModel.getType() == PlayerType.FIRST_PLAYER) {
+            try {
+                return player1Creatures;
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                return player2Creatures;
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

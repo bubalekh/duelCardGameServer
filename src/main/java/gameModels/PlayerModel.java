@@ -1,5 +1,6 @@
 package gameModels;
 
+import websocket.controller.CardGuildType;
 import websocket.controller.PlayerType;
 
 import java.util.LinkedList;
@@ -20,16 +21,18 @@ public class PlayerModel {
         this.graveyard = new LinkedList<>();
     }
 
-    public void activateCreature(CreatureModel creature) {
-        // ask a server to activate a creature № Creature_id from field Field_id
-    }
+    public void addCreaturesToHand(CardGuildType type) {
+        GuildModel guildModel = new GuildModel(type);
+        try {
+            deckModel.addToDeck(guildModel.getDeck());
+            deckModel.shuffleDeck();
+            deckModel.shuffleDeck();
+            deckModel.shuffleDeck();
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
-    public void getCreature() {
-        // ask a server to get a creature from the deck
-    }
-
-    public void checkAndDraw() {
-        // ask a server to perform check and draw
     }
 
     public PlayerType getType() {
@@ -46,5 +49,21 @@ public class PlayerModel {
 
     public void addPoints(int amount) {
         setPoints(getPoints() + amount);
+    }
+
+    public HandModel getHandModel() {
+        return handModel;
+    }
+
+    public DeckModel getDeckModel() {
+        return deckModel;
+    }
+
+    public void addToGraveyard(CreatureModel creature) {
+        try {
+            this.graveyard.add(creature);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }
