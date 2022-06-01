@@ -1,6 +1,4 @@
-package gameModels;
-
-import websocket.controller.CardController;
+package com.example.gameModels;
 
 import java.util.LinkedList;
 

@@ -1,6 +1,6 @@
-package gameModels;
+package com.example.gameModels;
 
-import websocket.controller.CardGuildType;
+import com.example.websocket.controller.CardGuildType;
 
 public class CreatureModel {
 

@@ -1,8 +1,7 @@
-package gameModels;
+package com.example.gameModels;
 
-import websocket.controller.PlayerType;
+import com.example.websocket.controller.PlayerType;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class FieldModel {

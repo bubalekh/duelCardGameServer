@@ -1,7 +1,7 @@
-package gameModels;
+package com.example.gameModels;
 
-import websocket.controller.CardGuildType;
-import websocket.controller.PlayerType;
+import com.example.websocket.controller.CardGuildType;
+import com.example.websocket.controller.PlayerType;
 
 import java.util.LinkedList;
 
@@ -32,7 +32,6 @@ public class PlayerModel {
         catch (NullPointerException e) {
             e.printStackTrace();
         }
-
     }
 
     public PlayerType getType() {

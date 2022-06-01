@@ -1,4 +1,4 @@
-package websocket.controller;
+package com.example.websocket.controller;
 
 public class LocationController {
     private int field;

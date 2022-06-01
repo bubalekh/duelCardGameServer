@@ -1,21 +1,26 @@
-package websocket;
+package com.example.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import websocket.message.MatchEvent;
+import com.example.websocket.message.MatchEvent;
 
-@Component
 public class EventHandler extends TextWebSocketHandler implements WebSocketHandler {
 
-    Backend backend = new Backend();
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper;
+    Backend backend;
+
+    public EventHandler(Backend backend) {
+        objectMapper =  new ObjectMapper();
+        this.backend = backend;
+    }
 
     @Override
     public void afterConnectionEstablished(@NotNull WebSocketSession session) throws Exception {

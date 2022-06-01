@@ -1,21 +1,21 @@
-package websocket;
+package com.example.websocket;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import websocket.controller.MatchController;
-import websocket.message.MatchEvent;
+import com.example.websocket.controller.MatchController;
+import com.example.websocket.message.MatchEvent;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Component
 public class Backend {
-    private final HashMap<WebSocketSession, String> gameUrlsHashMap;
-    private final HashMap<String, MatchController> gameControllerHashMap;
+    private final Map<WebSocketSession, String> gameUrlsHashMap;
+    private final Map<String, MatchController> gameControllerHashMap;
 
     public Backend() {
         gameUrlsHashMap = new HashMap<>();

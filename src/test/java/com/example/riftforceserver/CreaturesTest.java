@@ -1,11 +1,11 @@
 package com.example.riftforceserver;
 
-import gameModels.CreatureModel;
-import gameModels.FieldModel;
-import gameModels.GameModel;
-import gameModels.PlayerModel;
-import websocket.controller.CardGuildType;
-import websocket.controller.PlayerType;
+import com.example.gameModels.CreatureModel;
+import com.example.gameModels.FieldModel;
+import com.example.gameModels.GameModel;
+import com.example.gameModels.PlayerModel;
+import com.example.websocket.controller.CardGuildType;
+import com.example.websocket.controller.PlayerType;
 
 import java.util.ArrayList;
 

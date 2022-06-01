@@ -1,7 +1,7 @@
-package websocket.message;
+package com.example.websocket.message;
 
-import gameModels.FieldModel;
-import websocket.controller.CardController;
+import com.example.gameModels.FieldModel;
+import com.example.websocket.controller.CardController;
 
 import java.util.ArrayList;
 

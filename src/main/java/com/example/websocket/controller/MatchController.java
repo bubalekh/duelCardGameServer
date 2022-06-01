@@ -1,15 +1,15 @@
-package websocket.controller;
+package com.example.websocket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gameModels.CreatureModel;
-import gameModels.FieldModel;
-import gameModels.GameModel;
-import gameModels.PlayerModel;
+import com.example.gameModels.CreatureModel;
+import com.example.gameModels.FieldModel;
+import com.example.gameModels.GameModel;
+import com.example.gameModels.PlayerModel;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import websocket.message.MatchEvent;
-import websocket.message.EventType;
+import com.example.websocket.message.MatchEvent;
+import com.example.websocket.message.EventType;
 
 import java.io.IOException;
 import java.util.ArrayList;

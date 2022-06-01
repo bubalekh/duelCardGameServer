@@ -1,7 +1,7 @@
-package websocket.message;
+package com.example.websocket.message;
 
-import websocket.controller.CardController;
-import websocket.controller.CreatureController;
+import com.example.websocket.controller.CardController;
+import com.example.websocket.controller.CreatureController;
 
 import java.util.LinkedList;
 

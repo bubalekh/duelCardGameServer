@@ -2,17 +2,15 @@ package com.example.riftforceserver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import websocket.controller.*;
-import websocket.message.MatchEvent;
-import websocket.message.EventType;
+import com.example.websocket.controller.*;
+import com.example.websocket.message.MatchEvent;
+import com.example.websocket.message.EventType;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class JsonMapperTest {
-    String testJson = "{\"type\":\"activation\"}";
-
     public JsonMapperTest() throws NullPointerException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -29,11 +27,10 @@ public class JsonMapperTest {
                     EventType.ACTIVATION,
                     cards,
                     creatures);
-            // MatchEvent matchEvent = new MatchEvent(MatchEventType.READY);
             objectMapper.writeValue(new File("target/test.json"), matchEvent);
 
-            /*GameEvent gameEvent = objectMapper.readValue(testJson, GameEvent.class);
-            System.out.println(gameEvent.getType());*/
+            MatchEvent gameEvent = objectMapper.readValue(new File("target/test.json"), MatchEvent.class);
+            System.out.println(matchEvent.getCreatures().get(0).isAttack() == gameEvent.getCreatures().get(0).isAttack());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package websocket.message;
+package com.example.websocket.message;
 
 public enum EventType {
     ERROR,

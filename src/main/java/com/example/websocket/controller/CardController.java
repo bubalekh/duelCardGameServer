@@ -1,4 +1,4 @@
-package websocket.controller;
+package com.example.websocket.controller;
 
 public class CardController {
     private int power;

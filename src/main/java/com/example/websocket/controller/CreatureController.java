@@ -1,4 +1,4 @@
-package websocket.controller;
+package com.example.websocket.controller;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package gameModels;
+package com.example.gameModels;
 
-import websocket.controller.CardGuildType;
-import websocket.controller.PlayerType;
-import websocket.message.GameEvent;
+import com.example.websocket.controller.CardGuildType;
+import com.example.websocket.controller.PlayerType;
+import com.example.websocket.message.GameEvent;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
